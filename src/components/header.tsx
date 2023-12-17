@@ -11,6 +11,7 @@ export default function Header() {
           <Link href="/performance">Performance</Link>
           <Link href="/reliability">Reliability</Link>
           <Link href="/scale">Scale</Link>
+          <Link href="/snippets/new">New snippet</Link>
         </div>
       </nav>
     </div>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 import Header from "@/components/header";
 import "./globals.css";
 
@@ -19,8 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <div className="container mx-auto px-12">{children}</div>
       </body>
     </html>
   );
