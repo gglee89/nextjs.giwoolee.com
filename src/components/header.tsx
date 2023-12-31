@@ -1,19 +1,76 @@
 import Link from "next/link";
 
-export default function Header() {
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Input,
+  Button,
+  Avatar,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@nextui-org/react";
+import { auth } from "@/auth";
+import * as actions from "@/actions";
+
+export default async function Header() {
+  const session = await auth();
+
+  let authContent: React.ReactNode;
+  if (session?.user) {
+    authContent = (
+      <Popover placement="left">
+        <PopoverTrigger>
+          <Avatar src={session.user.image || ""} />
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="p-4">
+            <form action={actions.signOut}>
+              <Button type="submit">Sign Out</Button>
+            </form>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  } else {
+    authContent = (
+      <>
+        <NavbarItem>
+          <form action={actions.signIn}>
+            <Button type="submit" color="secondary" variant="bordered">
+              Sign In
+            </Button>
+          </form>
+        </NavbarItem>
+
+        <NavbarItem>
+          <form action={actions.signIn}>
+            <Button type="submit" color="primary" variant="bordered">
+              Sign Up
+            </Button>
+          </form>
+        </NavbarItem>
+      </>
+    );
+  }
+
   return (
-    <div className="w-full absolute text-white z-10">
-      <nav className="container relative flex flex-wrap items-center justify-between mx-auto p-8">
-        <Link href="/" className="font-bond text-3xl">
-          Home
+    <Navbar className="shadow mb-6">
+      <NavbarBrand>
+        <Link href="/" className="font-bold">
+          Discuss
         </Link>
-        <div className="space-x-4 text-xl">
-          <Link href="/performance">Performance</Link>
-          <Link href="/reliability">Reliability</Link>
-          <Link href="/scale">Scale</Link>
-          <Link href="/snippets/new">New snippet</Link>
-        </div>
-      </nav>
-    </div>
+      </NavbarBrand>
+
+      <NavbarContent justify="center">
+        <NavbarItem>
+          <Input />
+        </NavbarItem>
+      </NavbarContent>
+
+      <NavbarContent justify="end">{authContent}</NavbarContent>
+    </Navbar>
   );
 }
